@@ -47,7 +47,7 @@ func Get(ctx context.Context, path string) (cue.Value, error) {
 		Registry: reg,
 	})
 
-	v := cuecontext.New().BuildInstance(insts[0])
+	v := cuecontext.New().BuildInstance(insts[0], cue.InferBuiltins(true))
 	if err := v.Err(); err != nil {
 		return cue.Value{}, err
 	}
