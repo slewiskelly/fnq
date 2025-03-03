@@ -1,26 +1,31 @@
 package fnq
 
 import (
-	"fmt"
+	"context"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/errors"
 	"cuelang.org/go/encoding/yaml"
 	"github.com/GoogleContainerTools/kpt-functions-sdk/go/fn"
+
+	"github.com/slewiskelly/fnq/internal/pkg/mod"
 )
 
 // Generate returns a ResourceListProcessorFunc for generating resources
 // within a resource list.
 //
 // Resources will be generated from other resources within the resource list
-// according to a corresponding resource generator.
+// according to a corresponding resource generator in the given module.
 //
 // See the [CUE reference] page for how validators should be expressed.
 //
+// A panic will occur if there is an error while retrieving the module.
+//
 // [CUE reference]: https://github.com/slewiskelly/fnq/docs/references/cue.md
-func Generate(v cue.Value) fn.ResourceListProcessorFunc {
-	if err := v.Err(); err != nil {
-		panic(fmt.Errorf("invalid generator: %w", err))
+func Generate(ctx context.Context, module string) fn.ResourceListProcessorFunc {
+	v, err := mod.Get(ctx, module)
+	if err != nil {
+		panic(err)
 	}
 
 	return (&processor{v: v}).generate

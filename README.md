@@ -15,24 +15,26 @@ import "github.com/slewiskelly/fnq"
 package main
 
 import (
+	"context"
 	_ "embed"
 	"os"
 
-	"cuelang.org/go/cue/cuecontext"
 	"github.com/GoogleContainerTools/kpt-functions-sdk/go/fn"
 	"github.com/slewiskelly/fnq"
 )
 
 func main() {
-	v := cuecontext.New().CompileString( /* ... */ )
+	ctx := context.Background()
 
 	err := fn.AsMain(fn.Chain(
-		fnq.Generate(v),  // Generate additional resources, adding them to the resource list.
-		fnq.Transform(v), // Transform resources within the resource list.
-		fnq.Validate(v),  // Validate all resources within the resource list.
+		fnq.Generate(ctx, module), // Generate additional resources, adding them to the resource list.
+		fnq.Transform(ctx, modle), // Transform resources within the resource list.
+		fnq.Validate(ctx, module), // Validate all resources within the resource list.
 	))
 	if err != nil {
 		os.Exit(1)
 	}
 }
+
+var module string // Set via linker flags.
 ```
