@@ -34,10 +34,11 @@ func errDetails(e error) error {
 	qe = errors.Sanitize(qe)
 
 	for _, err := range errors.Errors(qe) {
-		msgs = append(msgs, string(err.Error()))
+		f, a := err.Msg()
+		msgs = append(msgs, fmt.Sprintf("%s: %s", strings.Join(err.Path()[2:], "."), fmt.Sprintf(f, a...)))
 	}
 
-	return errors.New(strings.Join(msgs, ","))
+	return errors.New(strings.Join(msgs, "\n"))
 }
 
 func gvk(obj *fn.KubeObject) string {
