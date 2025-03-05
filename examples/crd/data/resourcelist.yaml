@@ -1,0 +1,23 @@
+apiVersion: config.kubernetes.io/v1
+kind: ResourceList
+items:
+- apiVersion: acme/v1
+  kind: Application
+  metadata:
+    name: echo
+    namespace: echo
+  spec:
+    image:
+      registry: acme.com
+      name: echo
+      tag: v1.2.3
+    expose:
+      http:
+        port: 8080
+  $patch:
+    deployment:
+      spec:
+        template:
+          spec:
+            securityContext:
+              readOnlyRootFileSystem: true
