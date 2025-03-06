@@ -47,6 +47,8 @@ func (p *processor) generate(rl *fn.ResourceList) (bool, error) {
 			continue
 		}
 
+		rl.Results.Infof("Generated %d resources from %s", len(items), obj.GetId())
+
 		items = append(items, i...)
 	}
 

@@ -43,6 +43,8 @@ func (p *processor) validate(rl *fn.ResourceList) (bool, error) {
 			results = append(results, fn.ErrorConfigObjectResult(err, obj))
 			continue
 		}
+
+		rl.Results.Infof("Validated %s", obj.GetId())
 	}
 
 	rl.Results = append(rl.Results, results...)

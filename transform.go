@@ -45,6 +45,10 @@ func (p *processor) transform(rl *fn.ResourceList) (bool, error) {
 			continue
 		}
 
+		// TODO(slewiskelly): This will always log regardless of whether the
+		// resource was actually transformed or not, compare?
+		rl.Results.Infof("Transformed %s", obj.GetId())
+
 		rl.UpsertObjectToItems(i, nil, true)
 	}
 
