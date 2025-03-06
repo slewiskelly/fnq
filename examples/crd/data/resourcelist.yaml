@@ -6,6 +6,8 @@ items:
   metadata:
     name: echo
     namespace: echo
+    annotations:
+      local-only: "true"
   spec:
     image:
       registry: acme.com

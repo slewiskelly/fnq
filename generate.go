@@ -2,6 +2,7 @@ package fnq
 
 import (
 	"context"
+	"slices"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/errors"
@@ -49,7 +50,7 @@ func (p *processor) generate(rl *fn.ResourceList) (bool, error) {
 		items = append(items, i...)
 	}
 
-	rl.Items = items
+	rl.Items = slices.Concat(rl.Items.WhereNot(fn.HasAnnotations(map[string]string{"local-only": "true"})), items)
 	rl.Results = append(rl.Results, results...)
 
 	if len(results) > 0 {
