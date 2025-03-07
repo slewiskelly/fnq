@@ -1,0 +1,46 @@
+apiVersion: config.kubernetes.io/v1
+kind: ResourceList
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: echo
+    namespace: echo
+    labels:
+      app: echo
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
+        app: echo
+    template:
+      metadata:
+        labels:
+          app: echo
+      spec:
+        containers:
+          - name: echo
+            image: acme.com/echo:v1.2.3
+            ports:
+              - name: http
+                containerPort: 8080
+            resources:
+              requests:
+                cpu: 1.0
+                memory: 256M
+              limits:
+                cpu: 3.0
+                memory: 256M
+- apiVersion: apps/v1
+  kind: Service
+  metadata:
+    name: echo
+    namespace: echo
+  spec:
+    selector:
+      app: echo
+    ports:
+      - name: http
+        port: 8080
+        targetPort: 8080
+        protocol: TCP
