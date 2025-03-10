@@ -1,0 +1,27 @@
+apiVersion: config.kubernetes.io/v1
+kind: ResourceList
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: echo
+    namespace: echo
+  spec: {}
+- apiVersion: autoscaling/v2
+  kind: HorizontalPodAutoscaler
+  metadata:
+    name: echo
+    namespace: echo
+  spec: {}
+- apiVersion: core/v1
+  kind: PodDisruptionBudget
+  metadata:
+    name: echo
+    namespace: echo
+  spec: {}
+- apiVersion: core/v1
+  kind: Service
+  metadata:
+    name: echo
+    namespace: echo
+  spec: {}
