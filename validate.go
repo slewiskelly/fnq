@@ -76,7 +76,7 @@ func (p *processor) vet(obj *fn.KubeObject) error {
 		return errDetails(err)
 	}
 
-	if err := v.Unify(w).Validate(cue.Hidden(false)); err != nil {
+	if err := v.Unify(w).Validate(cue.Concrete(true), cue.Final()); err != nil {
 		return errDetails(err)
 	}
 
