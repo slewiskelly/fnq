@@ -3,7 +3,7 @@ module github.com/slewiskelly/fnq
 go 1.24.0
 
 require (
-	cuelang.org/go v0.12.0
+	cuelang.org/go v0.12.1
 	github.com/GoogleContainerTools/kpt-functions-sdk/go/fn v0.0.0-20230427202446-3255accc518d
 )
 
