@@ -35,7 +35,7 @@ func (p *processor) transform(rl *fn.ResourceList) (bool, error) {
 	var results fn.Results
 
 	for _, obj := range rl.Items.WhereNot(fn.HasAnnotations(map[string]string{"no-transform": "true"})) {
-		i, err := p.xform(obj)
+		i, ok, err := p.xform(obj)
 		if err != nil {
 			if errors.Is(err, errNotFound) {
 				continue
@@ -45,9 +45,11 @@ func (p *processor) transform(rl *fn.ResourceList) (bool, error) {
 			continue
 		}
 
-		// TODO(slewiskelly): This will always log regardless of whether the
-		// resource was actually transformed or not, compare?
-		rl.Results.Infof("Transformed %s", obj.GetId())
+		if ok {
+			rl.Results.Infof("Transformed %s", obj.GetId())
+		} else {
+			rl.Results.Infof("Unchanged %s", obj.GetId())
+		}
 
 		rl.UpsertObjectToItems(i, nil, true)
 	}
@@ -61,35 +63,37 @@ func (p *processor) transform(rl *fn.ResourceList) (bool, error) {
 	return true, nil
 }
 
-func (p *processor) xform(obj *fn.KubeObject) (*fn.KubeObject, error) {
+func (p *processor) xform(obj *fn.KubeObject) (*fn.KubeObject, bool, error) {
 	v := p.v.LookupPath(cue.ParsePath("Transformers")).LookupPath(cue.ParsePath(gvk(obj)))
 	if err := v.Err(); err != nil {
 		if !v.Exists() {
-			return nil, errNotFound
+			return nil, false, errNotFound
 		}
 
-		return nil, errDetails(err)
+		return nil, false, errDetails(err)
 	}
 
 	a, err := yaml.Extract("", obj.String())
 	if err != nil {
-		return nil, errDetails(err)
+		return nil, false, errDetails(err)
 	}
 
 	w := v.Context().BuildFile(a)
 	if err := w.Err(); err != nil {
-		return nil, errDetails(err)
+		return nil, false, errDetails(err)
 	}
 
 	v = v.Unify(w)
 	if err := v.Validate(cue.Final(), cue.Hidden(false)); err != nil {
-		return nil, errDetails(err)
+		return nil, false, errDetails(err)
 	}
 
 	b, err := yaml.Encode(v)
 	if err != nil {
-		return nil, errDetails(err)
+		return nil, false, errDetails(err)
 	}
 
-	return fn.ParseKubeObject(b)
+	o, err := fn.ParseKubeObject(b)
+
+	return o, obj.String() != string(b), err
 }
