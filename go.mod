@@ -3,7 +3,7 @@ module github.com/slewiskelly/fnq
 go 1.24.0
 
 require (
-	cuelang.org/go v0.13.0
+	cuelang.org/go v0.13.2
 	github.com/GoogleContainerTools/kpt-functions-sdk/go/fn v0.0.0-20230427202446-3255accc518d
 )
 
@@ -37,7 +37,6 @@ require (
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/xlab/treeprint v1.1.0 // indirect
-	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/oauth2 v0.29.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
