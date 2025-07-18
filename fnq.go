@@ -41,10 +41,10 @@ func errDetails(e error) error {
 	return errors.New(strings.Join(msgs, "\n"))
 }
 
-func gvk(obj *fn.KubeObject) string {
+func gvk(obj *fn.KubeObject) (string, string, string) {
 	gvk := obj.GroupVersionKind()
 
-	return fmt.Sprintf("%s_%s_%s", gvk.Group, gvk.Version, gvk.Kind)
+	return gvk.Group, gvk.Version, gvk.Kind
 }
 
 var errNotFound = errors.New("not found")

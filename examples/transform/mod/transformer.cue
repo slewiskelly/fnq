@@ -1,5 +1,5 @@
 Transformers: {
-	"apps_v1_Deployment": #Deployment
+	apps: v1: Deployment: #Deployment
 }
 
 #Deployment: #Resource & {

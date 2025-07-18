@@ -2,6 +2,7 @@ package fnq
 
 import (
 	"context"
+	"fmt"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/errors"
@@ -64,7 +65,9 @@ func (p *processor) transform(rl *fn.ResourceList) (bool, error) {
 }
 
 func (p *processor) xform(obj *fn.KubeObject) (*fn.KubeObject, bool, error) {
-	v := p.v.LookupPath(cue.ParsePath("Transformers")).LookupPath(cue.ParsePath(gvk(obj)))
+	grp, ver, kind := gvk(obj)
+
+	v := p.v.LookupPath(cue.ParsePath(fmt.Sprintf("Transformers[%q][%q][%q]", grp, ver, kind)))
 	if err := v.Err(); err != nil {
 		if !v.Exists() {
 			return nil, false, errNotFound

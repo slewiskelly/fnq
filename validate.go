@@ -2,6 +2,7 @@ package fnq
 
 import (
 	"context"
+	"fmt"
 
 	"cuelang.org/go/cue"
 	"cuelang.org/go/cue/errors"
@@ -57,7 +58,9 @@ func (p *processor) validate(rl *fn.ResourceList) (bool, error) {
 }
 
 func (p *processor) vet(obj *fn.KubeObject) error {
-	v := p.v.LookupPath(cue.ParsePath("Validators")).LookupPath(cue.ParsePath(gvk(obj)))
+	grp, ver, kind := gvk(obj)
+
+	v := p.v.LookupPath(cue.ParsePath(fmt.Sprintf("Validators[%q][%q][%q]", grp, ver, kind)))
 	if err := v.Err(); err != nil {
 		if !v.Exists() {
 			return errNotFound

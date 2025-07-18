@@ -4,10 +4,12 @@ import (
 )
 
 Validators: {
-	"apps_v1_Deployment":                     #Deployment
-	"autoscaling_v2_HorizontalPodAutoscaler": #HorizontalPodAutoscaler
-	"core_v1_PodDisruptionBudget":            #PodDisruptionBudget
-	"core_v1_Service":                        #Service
+	apps: v1: Deployment:                     #Deployment
+	autoscaling: v2: HorizontalPodAutoscaler: #HorizontalPodAutoscaler
+	core: v1: {
+		PodDisruptionBudget: #PodDisruptionBudget
+		Service:             #Service
+	}
 }
 
 #Container: {

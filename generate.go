@@ -2,6 +2,7 @@ package fnq
 
 import (
 	"context"
+	"fmt"
 	"slices"
 
 	"cuelang.org/go/cue"
@@ -63,7 +64,9 @@ func (p *processor) generate(rl *fn.ResourceList) (bool, error) {
 }
 
 func (p *processor) gen(obj *fn.KubeObject) (fn.KubeObjects, error) {
-	v := p.v.LookupPath(cue.ParsePath("Generators")).LookupPath(cue.ParsePath(gvk(obj)))
+	grp, ver, kind := gvk(obj)
+
+	v := p.v.LookupPath(cue.ParsePath(fmt.Sprintf("Generators[%q][%q][%q]", grp, ver, kind)))
 	if err := v.Err(); err != nil {
 		if !v.Exists() {
 			return nil, errNotFound

@@ -1,10 +1,10 @@
 Validators: {
-	"apps_v1_Deployment": #Deployment
-	"v1_Service":         #Service
+	apps: v1: Deployment: #Deployment
+	v1: Service: #Service
 }
 
 Generators: {
-	"apps_v1_Deployment": #DeploymentGenerator
+	apps: v1: Deployment: #DeploymentGenerator
 }
 
 #Deployment: #Resource & {

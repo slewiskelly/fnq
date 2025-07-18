@@ -1,7 +1,7 @@
 apiVersion: config.kubernetes.io/v1
 kind: ResourceList
 items:
-- apiVersion: acme/v1
+- apiVersion: acme.com/v1
   kind: Application
   metadata:
     name: echo

@@ -1,13 +1,13 @@
 Generators: {
-	"acme_v1_Application": #ApplicationGenerator
+	"acme.com": v1: Application: #ApplicationGenerator
 }
 
 Validators: {
-	"acme_v1_Application": #Application
+	"acme.com": v1: Application: #Application
 }
 
 #Application: X={
-	apiVersion: "acme/v1"
+	apiVersion: "acme.com/v1"
 	kind:       "Application"
 
 	metadata: #Metadata & {
